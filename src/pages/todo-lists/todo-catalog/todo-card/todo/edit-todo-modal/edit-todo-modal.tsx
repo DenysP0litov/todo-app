@@ -1,0 +1,52 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useDispatch } from "react-redux";
+import { todoActions } from "../../../../../../store";
+
+type Props = {
+    listId: number,
+    todoId: number,
+    setTodoEdit: Dispatch<SetStateAction<boolean>>;
+};
+
+export const EditTodoModal: React.FC<Props> = ({listId, todoId, setTodoEdit}) => {
+    const [modalInput, setModalInput] = useState('');
+    const dispatch = useDispatch();
+
+    const renameTodo = (listId: number, todoId: number, name: string) => {
+        dispatch(todoActions.setTodoName(listId, todoId, name));
+        setTodoEdit(false);
+    }
+
+    return (
+        <Dialog open>
+            <DialogTitle>Renaming todo</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Enter new todo name to continue
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="New todo name"
+                    fullWidth
+                    variant="standard"
+                    value={modalInput}
+                    onChange={(event) => setModalInput(event.target.value)}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    onClick={() => setTodoEdit(false)}
+                >
+                    Cancel
+                </Button>
+                <Button
+                    onClick={() => renameTodo(listId, todoId, modalInput)}
+                >
+                    Rename
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+}

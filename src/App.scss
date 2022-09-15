@@ -1,0 +1,149 @@
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.todo-catalog {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  gap: 40px;
+
+  margin-top: 40px;
+}
+
+.add-todo-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  box-sizing: border-box;
+  height: 300px;
+  width: 240px;
+
+  background-color: #42a5f5;
+  border: 3px dashed #1565c0;
+  border-radius: 10px;
+
+  font-size: 24px;
+  color: white;
+
+  opacity: 40%;
+  transition: 0.3s;
+
+  &:hover {
+    opacity: 80%;
+  }
+}
+
+.todo-list {
+  width: 240px;
+  height: 300px;
+  box-sizing: border-box;
+  
+  border: 1px solid lightgray;
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  &__panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 80px;
+    box-sizing: border-box;
+
+    border-radius: 0 0 10px 10px;
+    background-color: #42a5f5;
+
+    padding: 8px;
+
+    &:hover {
+      .todo-list__panel-buttons {
+        opacity: 100%;
+      }
+    }
+  }
+
+  &__panel-buttons {
+    display: flex;
+    flex-direction: column;
+    opacity: 0%;
+    transition: 0.3s;
+  }
+
+  &__title {
+    font-size: 24px;
+    color: white;
+  }
+
+  &__panel-button {
+    color: white;
+  }
+
+  &__todo-buttons {
+    opacity: 0%;
+    transition: 0.3s;
+
+    display: flex;
+  }
+
+  &__todos {
+    height: 220px;
+    overflow-y: scroll;
+
+    &:hover {
+      .todo-list__add-todo {
+        opacity: 100%;
+      }
+    }
+
+    &::-webkit-scrollbar { 
+      display: none;
+    }
+  }
+
+  &__todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 18px;
+
+    &:hover {
+      .todo-list__todo-buttons {
+        opacity: 100%;
+      }
+    }
+  }
+
+  &__add-todo {
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+
+    border-style: none;
+    border-radius: 10px;
+
+    width: 100%;
+    background-color: white;
+
+    opacity: 0%;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #42a5f544;
+    }
+  }
+
+  &__item-info {
+    display: flex;
+    align-items: center;
+  }
+}
+
+
