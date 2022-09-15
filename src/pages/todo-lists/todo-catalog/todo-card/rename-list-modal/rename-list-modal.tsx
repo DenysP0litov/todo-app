@@ -15,10 +15,26 @@ export const RenameListModal: React.FC<Props> = ({listId, setListNameEdit}) => {
     const renameList = (newListName: string, listId: number) => {
         dispatch(todoActions.setTodoListName(newListName, listId));
         setListNameEdit(false);
-    }
+    };
+
+    const keyHandler = (event: React.KeyboardEvent) => {
+        switch (event.key) {
+            case ('Enter'):
+                renameList(modalInput, listId)
+                setListNameEdit(false);
+                break;
+            case ('Escape'):
+                setListNameEdit(false);
+                break;
+            default:
+        }
+    };
 
     return (
-        <Dialog open>
+        <Dialog 
+            open
+            onKeyUp={(event) => keyHandler(event)}
+        >
             <DialogTitle>Renaming list</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -48,8 +64,4 @@ export const RenameListModal: React.FC<Props> = ({listId, setListNameEdit}) => {
             </DialogActions>
         </Dialog>
     );
-}
-
-function dispatch(arg0: any) {
-    throw new Error("Function not implemented.");
 }

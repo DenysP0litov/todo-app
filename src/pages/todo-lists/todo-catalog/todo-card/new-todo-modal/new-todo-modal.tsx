@@ -15,10 +15,26 @@ export const NewTodoModal: React.FC<Props> = ({ listId, setNewTodoEdit}) => {
     const addNewTodo = (newTodoName: string, listId: number) => {
         dispatch(todoActions.addTodo(newTodoName, listId));
         setNewTodoEdit(false);
-    }
+    };
+
+    const keyHandler = (event: React.KeyboardEvent) => {
+        switch (event.key) {
+            case ('Enter'):
+                addNewTodo(modalInput, listId);
+                setNewTodoEdit(false);
+                break;
+            case ('Escape'):
+                setNewTodoEdit(false);
+                break;
+            default:
+        }
+    };
 
     return (
-        <Dialog open>
+        <Dialog 
+            open
+            onKeyUp={(event) => keyHandler(event)}
+        >
             <DialogTitle>Adding new todo</DialogTitle>
             <DialogContent>
                 <DialogContentText>

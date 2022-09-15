@@ -18,8 +18,24 @@ export const EditTodoModal: React.FC<Props> = ({listId, todoId, setTodoEdit}) =>
         setTodoEdit(false);
     }
 
+    const keyHandler = (event: React.KeyboardEvent) => {
+        switch (event.key) {
+            case ('Enter'):
+                renameTodo(listId, todoId, modalInput)
+                setTodoEdit(false);
+                break;
+            case ('Escape'):
+                setTodoEdit(false);
+                break;
+            default:
+        }
+    };
+
     return (
-        <Dialog open>
+        <Dialog 
+            open
+            onKeyUp={(event) => keyHandler(event)}
+        >
             <DialogTitle>Renaming todo</DialogTitle>
             <DialogContent>
                 <DialogContentText>

@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
-import { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch } from "react-redux";
 import { todoActions } from "../../../../store";
 
@@ -16,8 +16,24 @@ export const NewListModal: React.FC<Props> = ({setNewListEdit}) => {
         setNewListEdit(false);
     }
 
+    const keyHandler = (event: React.KeyboardEvent) => {
+        switch (event.key) {
+            case ('Enter'):
+                addNewList(modalInput);
+                setNewListEdit(false);
+                break;
+            case ('Escape'):
+                setNewListEdit(false);
+                break;
+            default:
+        }
+    }
+
     return (
-        <Dialog open>
+        <Dialog 
+            open
+            onKeyUp={(event) => keyHandler(event)}
+        >
             <DialogTitle>Adding new list</DialogTitle>
             <DialogContent>
                 <DialogContentText>
