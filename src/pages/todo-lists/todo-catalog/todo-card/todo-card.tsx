@@ -54,7 +54,8 @@ export const TodoCard: React.FC<Props> = ({ list }) => {
                 </ul>
             </div>
             {listNameEdit && (
-                <RenameListModal 
+                <RenameListModal
+                    listName={list.name}
                     listId={list.id}
                     setListNameEdit={setListNameEdit}
                 />

@@ -4,13 +4,14 @@ import { useDispatch } from "react-redux";
 import { todoActions } from "../../../../../../store";
 
 type Props = {
+    todoName: string
     listId: number,
     todoId: number,
     setTodoEdit: Dispatch<SetStateAction<boolean>>;
 };
 
-export const EditTodoModal: React.FC<Props> = ({listId, todoId, setTodoEdit}) => {
-    const [modalInput, setModalInput] = useState('');
+export const EditTodoModal: React.FC<Props> = ({todoName, listId, todoId, setTodoEdit}) => {
+    const [modalInput, setModalInput] = useState(todoName);
     const dispatch = useDispatch();
 
     const renameTodo = (listId: number, todoId: number, name: string) => {

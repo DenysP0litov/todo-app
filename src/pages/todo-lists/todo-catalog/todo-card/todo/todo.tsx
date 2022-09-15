@@ -50,6 +50,7 @@ export const Todo: React.FC<Props> = ({todo, listId}) => {
             </li>
 
             {todoEdit && <EditTodoModal
+                todoName={todo.name}
                 listId={listId}
                 todoId={todo.id}
                 setTodoEdit={setTodoEdit}
