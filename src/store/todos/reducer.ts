@@ -19,7 +19,7 @@ export const todosSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    addTodo: (state, action: PayloadAction<AddTodoPayload>) => {
+    AddTodo: (state, action: PayloadAction<AddTodoPayload>) => {
       const { listId, name } = action.payload
       const listIndex = state.todoLists.findIndex((list) => list.id === listId)
       state.todoLists[listIndex].todos.push({
