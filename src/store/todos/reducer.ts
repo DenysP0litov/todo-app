@@ -1,126 +1,95 @@
-import { TodoListsState, TodosAction } from "./types";
+import {
+  AddTodoListPayload,
+  AddTodoPayload,
+  RemoveTodoListPayload,
+  RemoveTodoPayload,
+  SetTodoListNamePayload,
+  SetTodoNamePayload,
+  TodoListsState,
+  ToggleTodoStatusPayload,
+} from './types'
+
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: TodoListsState = {
-    todoLists: JSON.parse(
-        localStorage.getItem('todo-lists')!,
-    ) || [],
-};
+  todoLists: JSON.parse(localStorage.getItem('todo-lists')!) || [],
+}
 
-export const todosReducer = (state: TodoListsState = initialState, action: TodosAction) => {
-    switch(action.type) {
-        case ('ADD_TODO_LIST'):
-            return {
-                ...state,
-                todoLists: [
-                    ...state.todoLists,
-                    {
-                        name: action.payload,
-                        id: Math.random(),
-                        todos: [],
-                    }
-                ]
-            };
-        case ('ADD_TODO'):
-            return {
-                ...state,
-                todoLists: state.todoLists.map(list => {
-                    if (list.id !== action.payload.listId) {
-                        return list;
-                    } 
+export const todosSlice = createSlice({
+  name: 'todos',
+  initialState,
+  reducers: {
+    addTodo: (state, action: PayloadAction<AddTodoPayload>) => {
+      const { listId, name } = action.payload
+      const listIndex = state.todoLists.findIndex((list) => list.id === listId)
+      state.todoLists[listIndex].todos.push({
+        name,
+        status: false,
+        id: Math.random(),
+      })
+    },
+    AddTodoList: (state, action: PayloadAction<AddTodoListPayload>) => {
+      const { name } = action.payload
+      state.todoLists.push({
+        name,
+        todos: [],
+        id: Math.random(),
+      })
+    },
+    RemoveTodo: (state, action: PayloadAction<RemoveTodoPayload>) => {
+      const { listId, todoId } = action.payload
+      const listIndex = state.todoLists.findIndex((list) => list.id === listId)
+      const todoIndex = state.todoLists[listIndex].todos.findIndex(
+        (todo) => todo.id === todoId
+      )
 
-                    return {
-                        ...list,
-                        todos: [
-                            ...list.todos,
-                            {
-                                id: Math.random(),
-                                name: action.payload.name,
-                                status: false,
-                            }
-                        ]
-                    };
-                }),
-            };
-        case ('REMOVE_TODO_LIST'):
-            return {
-                ...state,
-                todoLists: state.todoLists.filter(list => list.id !== action.payload),
-            };
-        case ('REMOVE_TODO'):
-            return {
-                ...state,
-                todoLists: state.todoLists.map(list => {
-                    if (list.id !== action.payload.listId) {
-                        return list;
-                    };
+      state.todoLists[listIndex].todos.splice(todoIndex, 1)
+    },
+    RemoveTodoList: (state, action: PayloadAction<RemoveTodoListPayload>) => {
+      const { listId } = action.payload
+      const listIndex = state.todoLists.findIndex((list) => list.id === listId)
 
-                    return {
-                        ...list,
-                        todos: list.todos.filter(todo => todo.id !== action.payload.todoId)
-                    };
-                }),
-            };
-        case ('SET_TODO_LIST_NAME'):
-            return {
-                ...state,
-                todoLists: state.todoLists.map(list => {
-                    if (list.id !== action.payload.listId) {
-                        return list;
-                    };
+      state.todoLists.splice(listIndex, 1)
+    },
+    SetTodoListName: (state, action: PayloadAction<SetTodoListNamePayload>) => {
+      const { listId, name } = action.payload
+      const listIndex = state.todoLists.findIndex((list) => list.id === listId)
 
-                    return {
-                        ...list,
-                        name: action.payload.name,
-                    };
-                }),
-            };
-        case ('SET_TODO_NAME'):
-            return {
-                ...state,
-                todoLists: state.todoLists.map(list => {
-                    if (list.id !== action.payload.listId) {
-                        return list;
-                    };
+      state.todoLists[listIndex].name = name
+    },
+    SetTodoName: (state, action: PayloadAction<SetTodoNamePayload>) => {
+      const { listId, todoId, name } = action.payload
+      const listIndex = state.todoLists.findIndex((list) => list.id === listId)
+      const todoIndex = state.todoLists[listIndex].todos.findIndex(
+        (todo) => todo.id === todoId
+      )
 
-                    return {
-                        ...list,
-                        todos: list.todos.map(todo => {
-                            if (todo.id !== action.payload.todoId) {
-                                return todo;
-                            };
+      state.todoLists[listIndex].todos[todoIndex].name = name
+    },
+    ToggleTodoStatus: (
+      state,
+      action: PayloadAction<ToggleTodoStatusPayload>
+    ) => {
+      const { listId, todoId } = action.payload
+      const listIndex = state.todoLists.findIndex((list) => list.id === listId)
+      const todoIndex = state.todoLists[listIndex].todos.findIndex(
+        (todo) => todo.id === todoId
+      )
 
-                            return {
-                                ...todo,
-                                name: action.payload.name,
-                            };
-                        })
-                    };
-                }),
-            };
-        case ('TOGGLE_TODO_STATUS'):
-            return {
-                ...state,
-                todoLists: state.todoLists.map(list => {
-                    if (list.id !== action.payload.listId) {
-                        return list;
-                    };
+      state.todoLists[listIndex].todos[todoIndex].status =
+        !state.todoLists[listIndex].todos[todoIndex].status
+    },
+  },
+})
 
-                    return {
-                        ...list,
-                        todos: list.todos.map(todo => {
-                            if (todo.id !== action.payload.todoId) {
-                                return todo;
-                            };
+export const {
+  AddTodo,
+  AddTodoList,
+  RemoveTodoList,
+  RemoveTodo,
+  SetTodoName,
+  SetTodoListName,
+  ToggleTodoStatus,
+} = todosSlice.actions
 
-                            return {
-                                ...todo,
-                                status: !todo.status,
-                            };
-                        })
-                    };
-                }),
-            };
-        default:
-            return state;
-    }
-};
+export default todosSlice.reducer

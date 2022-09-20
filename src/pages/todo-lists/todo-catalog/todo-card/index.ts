@@ -1,1 +1,1 @@
-export * from './todo-card';
+export * from './todo-card'

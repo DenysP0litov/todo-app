@@ -1,5 +1,5 @@
-import { RootState } from "../types";
+import { RootState } from '../types'
 
 export const todosSelectors = {
-    todoLists: (state: RootState) => state.todos.todoLists,
-};
+  todoLists: (state: RootState) => state.todos.todoLists,
+}

@@ -1,1 +1,1 @@
-export * from './new-list-modal';
+export * from './new-list-modal'

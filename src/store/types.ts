@@ -1,5 +1,5 @@
-import { TodoListsState } from "./todos/types";
+import { TodoListsState } from './todos/types'
 
 export type RootState = {
-    todos: TodoListsState,
-};
+  todos: TodoListsState
+}

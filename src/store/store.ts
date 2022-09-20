@@ -1,17 +1,8 @@
-import { combineReducers } from '@reduxjs/toolkit';
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import { todosReducer } from './todos';
+import { configureStore } from '@reduxjs/toolkit'
+import { todosSlice } from './todos'
 
-
-const rootReducer = combineReducers({
-    todos: todosReducer,
-});
-
-export const store = createStore(
-    rootReducer,
-    composeWithDevTools(
-      applyMiddleware(thunk),
-    ),
-);
+export const store = configureStore({
+  reducer: {
+    todos: todosSlice.reducer,
+  },
+})

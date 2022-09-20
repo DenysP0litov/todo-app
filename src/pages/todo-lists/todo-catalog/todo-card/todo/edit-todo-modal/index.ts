@@ -1,1 +1,1 @@
-export * from './edit-todo-modal';
+export * from './edit-todo-modal'

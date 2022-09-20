@@ -1,11 +1,9 @@
-import React from 'react';
-import './App.scss';
-import { TodoListsPage } from './pages/todo-lists';
+import React from 'react'
+import './App.scss'
+import { TodoListsPage } from './pages/todo-lists'
 
 function App() {
-  return (
-    <TodoListsPage />
-  );
+  return <TodoListsPage />
 }
 
-export default App;
+export default App
