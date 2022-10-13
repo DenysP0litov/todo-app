@@ -1,15 +1,16 @@
 import { Edit, Delete, AddCircleOutline } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import { useState } from 'react'
+import { Droppable } from 'react-beautiful-dnd'
 import { useDispatch } from 'react-redux'
 import { RemoveTodoList } from 'store'
-import { TodoList } from 'types'
+import { TodoList as TodoListType } from 'types'
 import { NewTodoModal } from './new-todo-modal'
 import { RenameListModal } from './rename-list-modal'
-import { Todo } from './todo'
+import { TodoList } from './todo-list'
 
 type Props = {
-  list: TodoList
+  list: TodoListType
 }
 
 export const TodoCard: React.FC<Props> = ({ list }) => {
@@ -35,19 +36,27 @@ export const TodoCard: React.FC<Props> = ({ list }) => {
             </IconButton>
           </div>
         </div>
-
-        <ul className="todo-list__todos">
-          {list.todos?.map((todo) => {
-            return <Todo listId={list.id} todo={todo} />
-          })}
+        
+        <div className="todo-list__list-container">
+          <Droppable droppableId={list.id.toString()}>
+            {(provided) => (
+              <TodoList 
+                {...provided.droppableProps}
+                innerRef={provided.innerRef}
+                list={list}
+              >
+                {provided.placeholder}
+              </TodoList>
+            )}
+          </Droppable>
           <button
-            className="todo-list__add-todo"
-            onClick={() => setNewTodoEdit(true)}
+              className="todo-list__add-todo"
+              onClick={() => setNewTodoEdit(true)}
           >
-            <AddCircleOutline />
-            Add new todo
+              <AddCircleOutline />
+              Add new todo
           </button>
-        </ul>
+        </div>
       </div>
       {listNameEdit && (
         <RenameListModal

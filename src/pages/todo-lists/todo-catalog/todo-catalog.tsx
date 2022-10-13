@@ -1,5 +1,6 @@
 import { NoteAdd } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
+import { DragDropContext } from 'react-beautiful-dnd'
 import { useSelector } from 'react-redux'
 import { todosSelectors } from 'store'
 import { NewListModal } from './new-list-modal'
@@ -14,7 +15,7 @@ export const TodoCatalog = () => {
   }, [todoLists])
 
   return (
-    <>
+    <DragDropContext onDragEnd={() => {}}>
       <div className="todo-catalog">
         {todoLists.map((list) => {
           return <TodoCard list={list} />
@@ -31,6 +32,6 @@ export const TodoCatalog = () => {
         </div>
       </div>
       {newListEdit && <NewListModal setNewListEdit={setNewListEdit} />}
-    </>
+    </DragDropContext>
   )
 }
