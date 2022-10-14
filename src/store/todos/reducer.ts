@@ -25,7 +25,7 @@ export const todosSlice = createSlice({
       state.todoLists[listIndex].todos.push({
         name,
         status: false,
-        id: Math.random(),
+        id: Math.random().toString(),
       })
     },
     AddTodoList: (state, action: PayloadAction<AddTodoListPayload>) => {
@@ -33,7 +33,7 @@ export const todosSlice = createSlice({
       state.todoLists.push({
         name,
         todos: [],
-        id: Math.random(),
+        id: Math.random().toString(),
       })
     },
     RemoveTodo: (state, action: PayloadAction<RemoveTodoPayload>) => {

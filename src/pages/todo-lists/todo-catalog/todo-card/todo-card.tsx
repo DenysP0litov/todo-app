@@ -18,7 +18,7 @@ export const TodoCard: React.FC<Props> = ({ list }) => {
   const [newTodoEdit, setNewTodoEdit] = useState(false)
   const dispatch = useDispatch()
 
-  const removeTodoList = (listId: number) => {
+  const removeTodoList = (listId: string) => {
     dispatch(RemoveTodoList({ listId }))
   }
 
@@ -38,10 +38,10 @@ export const TodoCard: React.FC<Props> = ({ list }) => {
         </div>
         
         <div className="todo-list__list-container">
-          <Droppable droppableId={list.id.toString()}>
+          <Droppable droppableId={list.id}>
             {(provided) => (
               <TodoList 
-                {...provided.droppableProps}
+                provided={provided}
                 innerRef={provided.innerRef}
                 list={list}
               >

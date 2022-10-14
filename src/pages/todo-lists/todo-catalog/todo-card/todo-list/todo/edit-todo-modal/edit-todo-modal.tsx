@@ -13,8 +13,8 @@ import { SetTodoName } from 'store'
 
 type Props = {
   todoName: string
-  listId: number
-  todoId: number
+  listId: string
+  todoId: string
   setTodoEdit: Dispatch<SetStateAction<boolean>>
 }
 
@@ -27,7 +27,7 @@ export const EditTodoModal: React.FC<Props> = ({
   const [modalInput, setModalInput] = useState(todoName)
   const dispatch = useDispatch()
 
-  const renameTodo = (listId: number, todoId: number, name: string) => {
+  const renameTodo = (listId: string, todoId: string, name: string) => {
     dispatch(SetTodoName({ listId, todoId, name }))
     setTodoEdit(false)
   }

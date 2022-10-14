@@ -1,11 +1,11 @@
 export type TodoList = {
   name: string
   todos: Todo[]
-  id: number
+  id: string
 }
 
 export type Todo = {
-  id: number
+  id: string
   name: string
   status: boolean
 }

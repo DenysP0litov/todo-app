@@ -17,9 +17,11 @@ export const TodoCatalog = () => {
   return (
     <DragDropContext onDragEnd={() => {}}>
       <div className="todo-catalog">
-        {todoLists.map((list) => {
-          return <TodoCard list={list} />
-        })}
+        <>
+          {todoLists.map((list) => {
+            return <TodoCard list={list} />
+          })}
+        </>
 
         <div
           className="add-todo-list"

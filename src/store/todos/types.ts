@@ -5,33 +5,33 @@ export type AddTodoListPayload = {
 }
 
 export type AddTodoPayload = {
-  listId: number
+  listId: string
   name: string
 }
 
 export type RemoveTodoListPayload = {
-  listId: number
+  listId: string
 }
 
 export type RemoveTodoPayload = {
-  listId: number
-  todoId: number
+  listId: string
+  todoId: string
 }
 
 export type SetTodoListNamePayload = {
-  listId: number
+  listId: string
   name: string
 }
 
 export type SetTodoNamePayload = {
-  listId: number
-  todoId: number
+  listId: string
+  todoId: string
   name: string
 }
 
 export type ToggleTodoStatusPayload = {
-  listId: number
-  todoId: number
+  listId: string
+  todoId: string
 }
 
 export type TodoListsState = {

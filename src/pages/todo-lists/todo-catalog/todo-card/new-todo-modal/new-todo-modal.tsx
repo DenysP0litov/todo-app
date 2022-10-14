@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux'
 import { AddTodo } from 'store'
 
 type Props = {
-  listId: number
+  listId: string
   setNewTodoEdit: Dispatch<SetStateAction<boolean>>
 }
 
@@ -20,7 +20,7 @@ export const NewTodoModal: React.FC<Props> = ({ listId, setNewTodoEdit }) => {
   const [modalInput, setModalInput] = useState('')
   const dispatch = useDispatch()
 
-  const addNewTodo = (name: string, listId: number) => {
+  const addNewTodo = (name: string, listId: string) => {
     dispatch(AddTodo({ name, listId }))
     setNewTodoEdit(false)
   }
