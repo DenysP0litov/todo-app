@@ -27,10 +27,6 @@ export const Todo: React.FC<Props> = ({ todo, listId, innerRef, provided }) => {
       dispatch(RemoveTodo({ listId, todoId }))
   }
 
-  const onClick = () => {
-    console.log(`Todo id is ${todo.id} and has ${typeof todo.id}`)
-  }
-
   return (
     <>
       <li 
@@ -39,7 +35,6 @@ export const Todo: React.FC<Props> = ({ todo, listId, innerRef, provided }) => {
         className="todo-list__todo-item"
         {...provided.dragHandleProps}
         {...provided.draggableProps}
-        onClick={onClick}
       >
         <div className="todo-list__item-info">
           <Checkbox

@@ -1,13 +1,10 @@
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 import { Todo } from './todo'
 import { TodoList as TodoListType } from 'types/todos'
-import { Draggable, DroppableProvided } from '@hello-pangea/dnd'
+import { Draggable } from '@hello-pangea/dnd'
 
 type Props = {
   list: TodoListType
-  // innerRef: (element: HTMLElement | null) => any
-  // provided: DroppableProvided
-  // children: ReactNode
 }
 
 export const TodoList: FC<Props> = ({ list }) => {

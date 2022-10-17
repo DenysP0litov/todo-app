@@ -1,5 +1,5 @@
-import { DragDropContext, DropResult, OnDragStartResponder } from '@hello-pangea/dnd'
-import { NoteAdd, SecurityUpdateWarningRounded } from '@mui/icons-material'
+import { DragDropContext, DropResult } from '@hello-pangea/dnd'
+import { NoteAdd } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
