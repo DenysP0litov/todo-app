@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { DraggableProvided } from 'react-beautiful-dnd'
 import { Todo as TodoType } from 'types'
 import { EditTodoModal } from './edit-todo-modal'
 import { Checkbox, IconButton } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
 import { RemoveTodo, ToggleTodoStatus } from 'store'
+import { DraggableProvided } from '@hello-pangea/dnd'
 
 type Props = {
   todo: TodoType
@@ -27,6 +27,10 @@ export const Todo: React.FC<Props> = ({ todo, listId, innerRef, provided }) => {
       dispatch(RemoveTodo({ listId, todoId }))
   }
 
+  const onClick = () => {
+    console.log(`Todo id is ${todo.id} and has ${typeof todo.id}`)
+  }
+
   return (
     <>
       <li 
@@ -35,7 +39,7 @@ export const Todo: React.FC<Props> = ({ todo, listId, innerRef, provided }) => {
         className="todo-list__todo-item"
         {...provided.dragHandleProps}
         {...provided.draggableProps}
-        onClick={() => {console.log(todo.id)}}
+        onClick={onClick}
       >
         <div className="todo-list__item-info">
           <Checkbox

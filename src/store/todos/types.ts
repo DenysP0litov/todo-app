@@ -34,6 +34,13 @@ export type ToggleTodoStatusPayload = {
   todoId: string
 }
 
+export type MoveTodoPayload = {
+  startListId: string
+  startTodoIndex: number
+  finishListId: string
+  finishTodoIndex: number
+}
+
 export type TodoListsState = {
   todoLists: TodoList[]
 }

@@ -1,28 +1,23 @@
-import { FC, JSXElementConstructor, ReactElement } from 'react'
+import { FC, ReactNode } from 'react'
 import { Todo } from './todo'
 import { TodoList as TodoListType } from 'types/todos'
-import { Draggable, DroppableProvided } from 'react-beautiful-dnd'
+import { Draggable, DroppableProvided } from '@hello-pangea/dnd'
 
 type Props = {
   list: TodoListType
-  innerRef: (element: HTMLElement | null) => any
-  provided: DroppableProvided
-  children:
-    | ReactElement<HTMLElement, string | JSXElementConstructor<any>>
-    | null
-    | undefined
+  // innerRef: (element: HTMLElement | null) => any
+  // provided: DroppableProvided
+  // children: ReactNode
 }
 
-export const TodoList: FC<Props> = ({ list, innerRef, provided }) => {
+export const TodoList: FC<Props> = ({ list }) => {
   return (
-    <ul 
+    <ul
       className="todo-list__todos"
-      ref={innerRef}
-      {...provided.droppableProps}
     >
       {list.todos?.map((todo, index) => {
         return (
-          <Draggable draggableId={todo.id} index={index}>
+          <Draggable draggableId={todo.id} index={index} key={todo.id}>
             {(provided) => (
               <Todo
                 provided={provided}

@@ -113,6 +113,9 @@ html {
 
     font-size: 18px;
 
+    background-color: white;
+    border-radius: 30px;
+
     &:hover {
       .todo-list__todo-buttons {
         opacity: 100%;

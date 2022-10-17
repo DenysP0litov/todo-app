@@ -1,6 +1,7 @@
 import {
   AddTodoListPayload,
   AddTodoPayload,
+  MoveTodoPayload,
   RemoveTodoListPayload,
   RemoveTodoPayload,
   SetTodoListNamePayload,
@@ -79,6 +80,18 @@ export const todosSlice = createSlice({
       state.todoLists[listIndex].todos[todoIndex].status =
         !state.todoLists[listIndex].todos[todoIndex].status
     },
+    MoveTodo: (
+      state,
+      action: PayloadAction<MoveTodoPayload>
+    ) => {
+      const { startListId, startTodoIndex, finishListId, finishTodoIndex} = action.payload
+      const startListIndex = state.todoLists.findIndex((list) => list.id === startListId)
+      const finishListIndex = state.todoLists.findIndex((list) => list.id === finishListId)
+      const todoToMove = state.todoLists[startListIndex].todos[startTodoIndex]
+
+      state.todoLists[startListIndex].todos.splice(startTodoIndex, 1)
+      state.todoLists[finishListIndex].todos.splice(finishTodoIndex, 0, todoToMove)
+    },
   },
 })
 
@@ -90,6 +103,7 @@ export const {
   SetTodoName,
   SetTodoListName,
   ToggleTodoStatus,
+  MoveTodo,
 } = todosSlice.actions
 
 export default todosSlice.reducer

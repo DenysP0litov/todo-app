@@ -1,7 +1,7 @@
+import { Droppable } from '@hello-pangea/dnd'
 import { Edit, Delete, AddCircleOutline } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import { useState } from 'react'
-import { Droppable } from 'react-beautiful-dnd'
 import { useDispatch } from 'react-redux'
 import { RemoveTodoList } from 'store'
 import { TodoList as TodoListType } from 'types'
@@ -11,9 +11,10 @@ import { TodoList } from './todo-list'
 
 type Props = {
   list: TodoListType
+  drag: boolean
 }
 
-export const TodoCard: React.FC<Props> = ({ list }) => {
+export const TodoCard: React.FC<Props> = ({ list, drag }) => {
   const [listNameEdit, setListNameEdit] = useState(false)
   const [newTodoEdit, setNewTodoEdit] = useState(false)
   const dispatch = useDispatch()
@@ -37,26 +38,27 @@ export const TodoCard: React.FC<Props> = ({ list }) => {
           </div>
         </div>
         
-        <div className="todo-list__list-container">
-          <Droppable droppableId={list.id}>
-            {(provided) => (
-              <TodoList 
-                provided={provided}
-                innerRef={provided.innerRef}
-                list={list}
-              >
-                {provided.placeholder}
-              </TodoList>
-            )}
-          </Droppable>
-          <button
-              className="todo-list__add-todo"
-              onClick={() => setNewTodoEdit(true)}
-          >
-              <AddCircleOutline />
-              Add new todo
-          </button>
-        </div>
+        <Droppable droppableId={list.id}>
+          {(provided) => (
+            <div 
+              ref={provided.innerRef}
+              {...provided.droppableProps} 
+              className="todo-list__list-container"
+            >
+              <TodoList list={list}/>
+              {drag || (
+                <button
+                  className="todo-list__add-todo"
+                  onClick={() => setNewTodoEdit(true)}
+                >
+                  <AddCircleOutline />
+                  Add new todo
+                </button>
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </div>
       {listNameEdit && (
         <RenameListModal
