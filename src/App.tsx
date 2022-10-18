@@ -1,9 +1,18 @@
-import React from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { LoginPage, RegistrationPage, TodoListsPage  } from 'pages'
 import './App.scss'
-import { TodoListsPage } from './pages/todo-lists'
 
 function App() {
-  return <TodoListsPage />
+  return (
+    <Routes>
+      <Route path='/login' element={<LoginPage />} />
+      <Route path='/register' element={<RegistrationPage />} />
+      <Route path='/todos' element={<TodoListsPage />} />
+      <Route path='*' element={
+        <Navigate to='/login' replace />
+      }/>
+    </Routes>
+  )
 }
 
 export default App

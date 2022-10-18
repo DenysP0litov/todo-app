@@ -1,0 +1,67 @@
+.user-form {
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid blue;
+    border-radius: 20px;
+
+    width: fit-content;
+
+    padding: 20px 40px;
+    margin: 30px auto;
+
+    &__title {
+        color: blue;
+        font-weight: bold;
+        font-size: 40px;
+        align-self: center;
+
+        text-align: center;
+
+        margin-bottom: 16px;
+    }
+
+    &__field {
+        box-sizing: border-box;
+
+        height: 38px;
+        width: 100%;
+
+        border: 1px solid lightgray;
+        border-radius: 10px;
+
+        margin-bottom: 16px;
+    }
+
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        margin-bottom: 16px;
+    }
+
+    &__button {
+        box-sizing: border-box;
+        height: 38px;
+
+        font-size: 20px;
+        color: white;
+        background-color: blue;
+
+        border: none;
+        border-radius: 19px;
+
+        margin-bottom: 16px;
+    }
+
+    &__link {
+        text-decoration: underline;
+        color: blue;
+        align-self: center;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
