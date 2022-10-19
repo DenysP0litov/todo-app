@@ -7,7 +7,6 @@ export const LoginForm = () => {
     initialValues: {
       email: '',
       password: '',
-      confirmPassword: '',
     },
     onSubmit: () => {},
   })
@@ -36,16 +35,6 @@ export const LoginForm = () => {
         type="password"
         onChange={formik.handleChange}
         value={formik.values.password}
-      />
-
-      <label htmlFor="confirmPassword">Confirm Password</label>
-      <input
-        className="user-form__field"
-        id="confirmPassword"
-        name="confirmPassword"
-        type="password"
-        onChange={formik.handleChange}
-        value={formik.values.confirmPassword}
       />
 
       <button type="submit" className="user-form__button">

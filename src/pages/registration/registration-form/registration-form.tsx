@@ -30,7 +30,7 @@ export const RegistrationForm = () => {
 
     if (!values.confirmPassword) {
       errors.confirmPassword = 'Confirm your password!'
-    } else if (!/^(?=.*[0-9])[A-Z0-9]{8, 16}$/i.test(values.password)) {
+    } else if (values.confirmPassword !== values.password) {
       errors.confirmPassword = 'Passwords dont match!'
     }
     
