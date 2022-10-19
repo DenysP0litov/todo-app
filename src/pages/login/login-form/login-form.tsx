@@ -38,11 +38,11 @@ export const LoginForm = () => {
         value={formik.values.password}
       />
 
-      <label htmlFor="confirm-password">Confirm Password</label>
+      <label htmlFor="confirmPassword">Confirm Password</label>
       <input
         className="user-form__field"
-        id="confirm-password"
-        name="confirm-password"
+        id="confirmPassword"
+        name="confirmPassword"
         type="password"
         onChange={formik.handleChange}
         value={formik.values.confirmPassword}

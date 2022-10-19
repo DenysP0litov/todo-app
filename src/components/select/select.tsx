@@ -1,28 +1,85 @@
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
 import classNames from 'classnames'
+import { FormikErrors, FormikTouched } from 'formik'
 import { useState } from 'react'
 import './select.scss'
 
 type Props = {
+  name: string
   title: string
   currentValue: string
   values: string[]
-  onChange: (value: string) => void
+  onChange: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) =>
+    | Promise<void>
+    | Promise<
+        FormikErrors<{
+          email: string
+          country: string
+          phone: string
+          password: string
+          confirmPassword: string
+          acceptTerms: boolean
+        }>
+      >
+  onBlur: (
+    touched: FormikTouched<{
+      email: string
+      country: string
+      phone: string
+      password: string
+      confirmPassword: string
+      acceptTerms: boolean
+    }>,
+    shouldValidate?: boolean | undefined
+  ) =>
+    | Promise<
+        FormikErrors<{
+          email: string
+          country: string
+          phone: string
+          password: string
+          confirmPassword: string
+          acceptTerms: boolean
+        }>
+      >
+    | Promise<void>
+  formikTouched: FormikTouched<{
+    email: string;
+    country: string;
+    phone: string;
+    password: string;
+    confirmPassword: string;
+    acceptTerms: boolean;
+  }>
 }
 
 export const Select: React.FC<Props> = ({
+  name,
   title,
   currentValue,
   values,
+  formikTouched,
   onChange,
+  onBlur
 }) => {
   const [listStatus, setStatus] = useState(false)
   const longestValueLength = Math.max(...values.map((value) => value.length))
-  const longestValue = values.find((value) => value.length === longestValueLength)
+  const longestValue = values.find(
+    (value) => value.length === longestValueLength
+  )
 
   const changeSelect = (value: string) => {
-    onChange(value)
+    onBlur({...formikTouched, country: true})
+    onChange(name, value)
     setStatus(false)
+  }
+
+  const selectNone = () => {
+    changeSelect('')
   }
 
   return (
@@ -33,14 +90,20 @@ export const Select: React.FC<Props> = ({
         })}
         onClick={() => setStatus(!listStatus)}
       >
-        {currentValue || title}
+        {(currentValue && (
+          <>
+            <span className={`fi fi-${currentValue.toLocaleLowerCase()}`} />{' '}
+            {currentValue}
+          </>
+        )) ||
+          title}
         {listStatus ? (
           <ArrowDropUp className="select__arrow" />
         ) : (
           <ArrowDropDown className="select__arrow" />
         )}
       </div>
-      <div className='select__width-expander'>
+      <div className="select__width-expander">
         <span className="fi fi-ua" />
         {' ' + longestValue}
       </div>
@@ -50,7 +113,7 @@ export const Select: React.FC<Props> = ({
         })}
       >
         <li
-          onClick={() => changeSelect('')}
+          onClick={selectNone}
           key="None"
           className="select__list-item"
         >
