@@ -1,6 +1,5 @@
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material'
 import classNames from 'classnames'
-import { FormikErrors, FormikTouched } from 'formik'
 import { useState } from 'react'
 import './select.scss'
 
@@ -9,52 +8,8 @@ type Props = {
   title: string
   currentValue: string
   values: string[]
-  onChange: (
-    field: string,
-    value: any,
-    shouldValidate?: boolean | undefined
-  ) =>
-    | Promise<void>
-    | Promise<
-        FormikErrors<{
-          email: string
-          country: string
-          phone: string
-          password: string
-          confirmPassword: string
-          acceptTerms: boolean
-        }>
-      >
-  onBlur: (
-    touched: FormikTouched<{
-      email: string
-      country: string
-      phone: string
-      password: string
-      confirmPassword: string
-      acceptTerms: boolean
-    }>,
-    shouldValidate?: boolean | undefined
-  ) =>
-    | Promise<
-        FormikErrors<{
-          email: string
-          country: string
-          phone: string
-          password: string
-          confirmPassword: string
-          acceptTerms: boolean
-        }>
-      >
-    | Promise<void>
-  formikTouched: FormikTouched<{
-    email: string;
-    country: string;
-    phone: string;
-    password: string;
-    confirmPassword: string;
-    acceptTerms: boolean;
-  }>
+  setFieldValue: (field: string, value: string | undefined) => void
+  setFieldError: (field: string, value: string | undefined) => void
 }
 
 export const Select: React.FC<Props> = ({
@@ -62,20 +17,28 @@ export const Select: React.FC<Props> = ({
   title,
   currentValue,
   values,
-  formikTouched,
-  onChange,
-  onBlur
+  setFieldValue,
+  setFieldError,
 }) => {
-  const [listStatus, setStatus] = useState(false)
+  const [listStatus, setListStatus] = useState(false)
+  const [searchStatus, setSearchStatus] = useState(false)
+  const [searchQuery, setQuery] = useState(currentValue)
   const longestValueLength = Math.max(...values.map((value) => value.length))
   const longestValue = values.find(
     (value) => value.length === longestValueLength
   )
 
+  const handleClick = () => {
+    setListStatus(!listStatus)
+    setSearchStatus(!searchStatus)
+  }
+
   const changeSelect = (value: string) => {
-    onBlur({...formikTouched, country: true})
-    onChange(name, value)
-    setStatus(false)
+    setFieldValue(name, value)
+    setFieldError(name, '')
+    setListStatus(false)
+    setSearchStatus(false)
+    setQuery('')
   }
 
   const selectNone = () => {
@@ -84,25 +47,32 @@ export const Select: React.FC<Props> = ({
 
   return (
     <div className="select">
-      <div
-        className={classNames('select__field', {
-          'select__field--unselected': !currentValue,
-        })}
-        onClick={() => setStatus(!listStatus)}
-      >
-        {(currentValue && (
-          <>
-            <span className={`fi fi-${currentValue.toLocaleLowerCase()}`} />{' '}
-            {currentValue}
-          </>
-        )) ||
-          title}
-        {listStatus ? (
-          <ArrowDropUp className="select__arrow" />
-        ) : (
-          <ArrowDropDown className="select__arrow" />
-        )}
-      </div>
+      {searchStatus ? (
+        <input 
+          className="select__field"
+          value={searchQuery}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      ) : (
+        <div
+          className={classNames('select__field', {
+            'select__field--unselected': !currentValue,
+          })}
+          onClick={handleClick}
+        >
+          {(currentValue && (
+            <>
+              <span className={`fi fi-${currentValue.toLocaleLowerCase()}`} />{' '}
+              {currentValue}
+            </>
+          )) ||
+            title}
+        </div>
+      )}
+      <ArrowDropDown 
+        className={classNames('select__arrow', {'select__arrow--up': listStatus})}
+        onClick={() => setListStatus(!listStatus)}
+      />
       <div className="select__width-expander">
         <span className="fi fi-ua" />
         {' ' + longestValue}
@@ -119,18 +89,22 @@ export const Select: React.FC<Props> = ({
         >
           None
         </li>
-        {values.map((value) => (
-          <li
-            onClick={() => changeSelect(value)}
-            key={value}
-            className={classNames('select__list-item', {
-              'select__list-item--active': value === currentValue,
-            })}
-          >
-            <span className={`fi fi-${value.toLocaleLowerCase()}`} />
-            {' ' + value}
-          </li>
-        ))}
+        {values.map((value) => {
+          if (value.includes(searchQuery.toLocaleUpperCase())) {
+            return (
+              <li
+                onClick={() => changeSelect(value)}
+                key={value}
+                className={classNames('select__list-item', {
+                  'select__list-item--active': value === currentValue,
+                })}
+              >
+                <span className={`fi fi-${value.toLocaleLowerCase()}`} />
+                {' ' + value}
+              </li>
+            )
+          }
+        })}
       </ul>
     </div>
   )

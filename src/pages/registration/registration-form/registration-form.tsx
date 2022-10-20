@@ -1,6 +1,7 @@
 import { FormatLineSpacing } from '@mui/icons-material'
 import { Select } from 'components/select/select'
 import { FormikErrors, FormikValues, useFormik } from 'formik'
+import { ChangeEvent, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import 'styles/user-form.scss'
 
@@ -55,13 +56,27 @@ export const RegistrationForm = () => {
       acceptTerms: false,
     },
     validate,
-    onSubmit: () => {},
+    onSubmit: (values, event) => {
+      validate(values)
+    },
+    validateOnChange: false,
+    validateOnBlur: false,
   })
   const countries = getCodes()
   const navigate = useNavigate()
 
+  const handleFormChange = (e: FormEvent) => {
+    setFieldError((e.target as HTMLElement).getAttribute('name')!, '')
+  }
+
+  const {getFieldProps, handleSubmit, setTouched, setFieldValue, setFieldError, errors, touched, values} = formik
+
   return (
-    <form className="user-form" onSubmit={formik.handleSubmit}>
+    <form 
+      className="user-form" 
+      onSubmit={handleSubmit}
+      onChange={(e) => handleFormChange(e)}
+    >
       <h1 className="user-form__title">Welcome!</h1>  
 
       <div className="user-form__row">
@@ -69,15 +84,12 @@ export const RegistrationForm = () => {
         <input
           className="user-form__field"
           id="email"
-          name="email"
           type="email"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.email}
+          {...getFieldProps('email')}
         />
-        {formik.errors.email && formik.touched.email && (
+        {errors.email && (
           <span className="user-form__error">
-            {formik.errors.email}
+            {errors.email}
           </span>
         )}
       </div>
@@ -87,15 +99,12 @@ export const RegistrationForm = () => {
         <input
           className="user-form__field"
           id="phone"
-          name="phone"
           type="phone"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.phone}
+          {...getFieldProps('phone')}
         />
-        {formik.errors.phone && formik.touched.phone && (
+        {errors.phone && (
           <span className="user-form__error">
-            {formik.errors.phone}
+            {errors.phone}
           </span>
         )}
       </div>
@@ -105,15 +114,12 @@ export const RegistrationForm = () => {
         <input
           className="user-form__field"
           id="password"
-          name="password"
           type="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
+          {...getFieldProps('password')}
         />
-        {formik.errors.password && formik.touched.password && (
+        {errors.password && (
           <span className="user-form__error">
-            {formik.errors.password}
+            {errors.password}
           </span>
         )}
       </div>
@@ -123,13 +129,10 @@ export const RegistrationForm = () => {
         <input
           className="user-form__field"
           id="confirmPassword"
-          name="confirmPassword"
           type="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.confirmPassword}
+          {...getFieldProps('confirmPassword')}
         />
-        {formik.errors.confirmPassword && formik.touched.confirmPassword && (
+        {formik.errors.confirmPassword && (
           <span className="user-form__error">
             {formik.errors.confirmPassword}
           </span>
@@ -141,15 +144,14 @@ export const RegistrationForm = () => {
         <Select
           name="country"
           values={countries}
-          currentValue={formik.values.country}
-          onChange={formik.setFieldValue}
-          onBlur={formik.setTouched}
-          formikTouched={formik.touched}
+          currentValue={values.country}
+          setFieldValue={setFieldValue}
+          setFieldError={setFieldError}
           title='country'
         />
-        {formik.errors.country && formik.touched.country && (
+        {errors.country && (
         <span className="user-form__error">
-          {formik.errors.country}
+          {errors.country}
         </span>
         )}
       </div>
@@ -158,11 +160,8 @@ export const RegistrationForm = () => {
         <input
           className="user-form__checkbox"
           type="checkbox" 
-          name="acceptTerms" 
           id="acceptTerms"
-          checked={formik.values.acceptTerms} 
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+          {...getFieldProps('acceptTerms')}
         />
         <label htmlFor="acceptTerms">
           I'm agree with{' '}
@@ -174,9 +173,9 @@ export const RegistrationForm = () => {
             terms of service
           </a>
         </label>
-        {formik.errors.acceptTerms && formik.touched.acceptTerms &&(
+        {errors.acceptTerms && (
         <span className="user-form__error">
-          {formik.errors.acceptTerms}
+          {errors.acceptTerms}
         </span>
         )}
       </div>
