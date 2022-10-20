@@ -1,11 +1,9 @@
-import { FormatLineSpacing } from '@mui/icons-material'
-import { Select } from 'components/select/select'
-import { FormikErrors, FormikValues, useFormik } from 'formik'
-import { ChangeEvent, FormEvent } from 'react'
+import { FormCountrySelect, FormTextInput } from 'components/form'
+import { LinkedTextCheckbox } from 'components/form/linked-text-checkbox'
+import { Formik, FormikErrors, FormikValues} from 'formik'
+import { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import 'styles/user-form.scss'
-
-const { getCodes } = require('country-list')
 
 export const RegistrationForm = () => {
   const validate = (values: FormikValues) => {
@@ -46,146 +44,55 @@ export const RegistrationForm = () => {
     return errors
   };
 
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      country: '',
-      phone: '',
-      password: '',
-      confirmPassword: '',
-      acceptTerms: false,
-    },
-    validate,
-    onSubmit: (values, event) => {
-      validate(values)
-    },
-    validateOnChange: false,
-    validateOnBlur: false,
-  })
-  const countries = getCodes()
   const navigate = useNavigate()
 
-  const handleFormChange = (e: FormEvent) => {
-    setFieldError((e.target as HTMLElement).getAttribute('name')!, '')
-  }
-
-  const {getFieldProps, handleSubmit, setTouched, setFieldValue, setFieldError, errors, touched, values} = formik
-
   return (
-    <form 
-      className="user-form" 
-      onSubmit={handleSubmit}
-      onChange={(e) => handleFormChange(e)}
+    <Formik
+      initialValues={{
+        email: '',
+        country: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+        acceptTerms: false,
+      }}
+      validate={validate}
+      onSubmit={() => {}}
+      validateOnChange={false}
+      validateOnBlur={false}
     >
-      <h1 className="user-form__title">Welcome!</h1>  
+      {({handleSubmit, setFieldError}) => { 
+        const handleFormChange = (e: FormEvent) => {
+          setFieldError((e.target as HTMLElement).getAttribute('name')!, '')
+        }
 
-      <div className="user-form__row">
-        <label htmlFor="email">Email Address</label>
-        <input
-          className="user-form__field"
-          id="email"
-          type="email"
-          {...getFieldProps('email')}
-        />
-        {errors.email && (
-          <span className="user-form__error">
-            {errors.email}
-          </span>
-        )}
-      </div>
-
-      <div className="user-form__row">
-        <label htmlFor="phone">Phone number</label>
-        <input
-          className="user-form__field"
-          id="phone"
-          type="phone"
-          {...getFieldProps('phone')}
-        />
-        {errors.phone && (
-          <span className="user-form__error">
-            {errors.phone}
-          </span>
-        )}
-      </div>
-
-      <div className="user-form__row">
-        <label htmlFor="password">Password</label>
-        <input
-          className="user-form__field"
-          id="password"
-          type="password"
-          {...getFieldProps('password')}
-        />
-        {errors.password && (
-          <span className="user-form__error">
-            {errors.password}
-          </span>
-        )}
-      </div>
-
-      <div className="user-form__row">
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
-          className="user-form__field"
-          id="confirmPassword"
-          type="password"
-          {...getFieldProps('confirmPassword')}
-        />
-        {formik.errors.confirmPassword && (
-          <span className="user-form__error">
-            {formik.errors.confirmPassword}
-          </span>
-        )}
-      </div>
-
-      <div className="user-form__row user-form__row--country">
-        <p>Country:</p>
-        <Select
-          name="country"
-          values={countries}
-          currentValue={values.country}
-          setFieldValue={setFieldValue}
-          setFieldError={setFieldError}
-          title='country'
-        />
-        {errors.country && (
-        <span className="user-form__error">
-          {errors.country}
-        </span>
-        )}
-      </div>
-
-      <div className="user-form__row user-form__row--checkbox">
-        <input
-          className="user-form__checkbox"
-          type="checkbox" 
-          id="acceptTerms"
-          {...getFieldProps('acceptTerms')}
-        />
-        <label htmlFor="acceptTerms">
-          I'm agree with{' '}
-          <a
-            href="https://youtu.be/dQw4w9WgXcQ"
-            target="_blank"
-            rel="noreferrer"
+        return (
+          <form 
+            className="user-form" 
+            onSubmit={handleSubmit}
+            onChange={(e) => handleFormChange(e)}
           >
-            terms of service
-          </a>
-        </label>
-        {errors.acceptTerms && (
-        <span className="user-form__error">
-          {errors.acceptTerms}
-        </span>
-        )}
-      </div>
-
-      <button type="submit" className="user-form__button">
-        Register
-      </button>
-      <span className="user-form__link" onClick={() => navigate('/login')}>
-        I have an account already
-      </span>
-    </form>
+            <h1 className="user-form__title">Welcome!</h1>  
+            <FormTextInput label="Email adress" name="email" type="text" />
+            <FormTextInput label="Phone number" name="phone" type="text" />
+            <FormTextInput label="Password" name="password" type="password" />
+            <FormTextInput label="Confirm password" name="confirmPassword" type="password" />
+            <FormCountrySelect name="country"/>
+            <LinkedTextCheckbox 
+              name="acceptTerms" 
+              label="I'm agree with" 
+              linkedLabel="terms of service"
+              link="https://youtu.be/dQw4w9WgXcQ"
+            />
+      
+            <button type="submit" className="user-form__button">
+              Register
+            </button>
+            <span className="user-form__link" onClick={() => navigate('/login')}>
+              I have an account already
+            </span>
+          </form>
+      )}}
+    </Formik>
   )
 }

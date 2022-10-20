@@ -4,16 +4,14 @@ import { useState } from 'react'
 import './select.scss'
 
 type Props = {
-  name: string
   title: string
   currentValue: string
   values: string[]
-  setFieldValue: (field: string, value: string | undefined) => void
-  setFieldError: (field: string, value: string | undefined) => void
+  setFieldValue: (value: string) => void
+  setFieldError: (value: string) => void
 }
 
 export const Select: React.FC<Props> = ({
-  name,
   title,
   currentValue,
   values,
@@ -34,8 +32,8 @@ export const Select: React.FC<Props> = ({
   }
 
   const changeSelect = (value: string) => {
-    setFieldValue(name, value)
-    setFieldError(name, '')
+    setFieldValue(value)
+    setFieldError('')
     setListStatus(false)
     setSearchStatus(false)
     setQuery('')
