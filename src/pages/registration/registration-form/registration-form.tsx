@@ -1,61 +1,24 @@
-import { FormCountrySelect, FormTextInput } from 'components/form'
-import { LinkedTextCheckbox } from 'components/form/linked-text-checkbox'
-import { Form, Formik, FormikErrors, FormikValues} from 'formik'
 import { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Form, Formik } from 'formik'
+import { FormCountrySelect, FormTextInput } from 'components/form'
+import { LinkedTextCheckbox } from 'components/form/linked-text-checkbox'
+import { registrationFormInitialValues as initialValues } from './constants'
+import { validateRegistration as validate } from './utils'
 import 'styles/user-form.scss'
+import { RegistrationFormValues } from 'types'
 
-export const RegistrationForm = () => {
-  const validate = (values: FormikValues) => {
-    const errors: FormikErrors<FormikValues> = {}
-
-    if (!values.email) {
-      errors.email = 'Enter your email!'
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address!'
-    }
-
-    if (!values.phone) {
-      errors.phone = 'Enter your phone number!'
-    } else if (!/^\++[0-9]{7,15}$/.test(values.phone)) {
-      errors.phone = 'Invalid phone number!'
-    }
-
-    if (!values.password) {
-      errors.password = 'Enter your password!'
-    } else if (!/(?=.*[0-9])[A-Z0-9]{8,16}/i.test(values.password)) {
-      errors.password = 'Password must have at least 8 symbols!'
-    }
-
-    if (!values.confirmPassword) {
-      errors.confirmPassword = 'Confirm your password!'
-    } else if (values.confirmPassword !== values.password) {
-      errors.confirmPassword = 'Passwords dont match!'
-    }
-    
-    if (!values.country) {
-      errors.country = 'Choose your country!'
-    }
-
-    if (!values.acceptTerms) {
-      errors.acceptTerms = 'Accept our terms of service!'
-    }
-  
-    return errors
-  };
-
+export const RegistrationForm = () => {  
   const navigate = useNavigate()
+
+  const handleLoginLinkClick = () => {
+    navigate('./login')
+  }
 
   return (
     <Formik
-      initialValues={{
-        email: '',
-        country: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-        acceptTerms: false,
-      }}
+      <RegistrationFormValues>
+      initialValues={initialValues}
       validate={validate}
       onSubmit={() => {}}
       validateOnChange={false}
@@ -87,7 +50,7 @@ export const RegistrationForm = () => {
             <button type="submit" className="user-form__button">
               Register
             </button>
-            <span className="user-form__link" onClick={() => navigate('/login')}>
+            <span className="user-form__link" onClick={handleLoginLinkClick}>
               I have an account already
             </span>
           </Form>

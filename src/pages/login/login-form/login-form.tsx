@@ -1,36 +1,19 @@
-import { FormTextInput } from 'components/form';
-import { Form, Formik, FormikErrors, FormikValues, useFormik } from 'formik'
-import { FormEvent } from 'react';
+import { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Form, Formik } from 'formik'
+import { LoginFormValues } from 'types';
+import { loginFormInitialValues as initialValues } from './constants'
+import { loginFormValidate as validate } from './utils'
+import { FormTextInput } from 'components/form'
 import 'styles/user-form.scss'
 
 export const LoginForm = () => {
-  const validate = (values: FormikValues) => {
-    const errors: FormikErrors<FormikValues> = {}
-
-    if (!values.email) {
-      errors.email = 'Enter your email!'
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address!'
-    }
-
-    if (!values.password) {
-      errors.password = 'Enter your password!'
-    } else if (!/(?=.*[0-9])[A-Z0-9]{8,16}/i.test(values.password)) {
-      errors.password = 'Password must have at least 8 symbols!'
-    }
-  
-    return errors
-  };
-
   const navigate = useNavigate()
 
   return (
     <Formik
-      initialValues={{
-        email: '',
-        password: '',
-      }}
+      <LoginFormValues>
+      initialValues={initialValues}
       validate={validate}
       onSubmit={() => {}}
       validateOnChange={false}
