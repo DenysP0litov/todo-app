@@ -1,6 +1,6 @@
 import { FormCountrySelect, FormTextInput } from 'components/form'
 import { LinkedTextCheckbox } from 'components/form/linked-text-checkbox'
-import { Formik, FormikErrors, FormikValues} from 'formik'
+import { Form, Formik, FormikErrors, FormikValues} from 'formik'
 import { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import 'styles/user-form.scss'
@@ -67,7 +67,7 @@ export const RegistrationForm = () => {
         }
 
         return (
-          <form 
+          <Form
             className="user-form" 
             onSubmit={handleSubmit}
             onChange={(e) => handleFormChange(e)}
@@ -84,14 +84,13 @@ export const RegistrationForm = () => {
               linkedLabel="terms of service"
               link="https://youtu.be/dQw4w9WgXcQ"
             />
-      
             <button type="submit" className="user-form__button">
               Register
             </button>
             <span className="user-form__link" onClick={() => navigate('/login')}>
               I have an account already
             </span>
-          </form>
+          </Form>
       )}}
     </Formik>
   )
