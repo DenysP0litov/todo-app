@@ -1,21 +1,49 @@
 import { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikErrors } from 'formik'
 import { LoginFormValues } from 'types';
 import { loginFormInitialValues as initialValues } from './constants'
-import { loginFormValidate as validate } from './utils'
 import { FormTextInput } from 'components/form'
 import 'styles/user-form.scss'
+import { useSelector } from 'react-redux';
+import { usersSelectors } from 'store/users/selectors';
+import { useDispatch } from 'react-redux';
+import { LoginUser } from 'store/users';
 
 export const LoginForm = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const users = useSelector(usersSelectors.users)
+
+  const validate = (values: LoginFormValues) => {
+    const errors: FormikErrors<LoginFormValues> = {}
+    const user = users.find(user => user.email === values.email)
+  
+    if (!values.email) errors.email = 'Enter your email!'
+    else if (!user)
+      errors.email = 'User with this email doesn\'t exist'
+  
+    if (!values.password) errors.password = 'Enter your password!'
+    else if (user?.password !== values.password)
+      errors.password = 'Invalid password!'
+  
+    return errors
+  }
+
+  const handleSubmit = (values: LoginFormValues) => {
+    const user = users.find(user => user.email === values.email)
+
+    dispatch(LoginUser({email: values.email}))
+    localStorage.setItem('current-user', JSON.stringify(user))
+    navigate('/todos')
+  }
 
   return (
     <Formik
       <LoginFormValues>
       initialValues={initialValues}
       validate={validate}
-      onSubmit={() => {}}
+      onSubmit={handleSubmit}
       validateOnChange={false}
       validateOnBlur={false}
     >

@@ -9,3 +9,8 @@ export type RegistrationFormValues = LoginFormValues & {
     confirmPassword: string
     acceptTerms: boolean
 }
+
+export type User = LoginFormValues & {
+    phone: string
+    country: string
+}

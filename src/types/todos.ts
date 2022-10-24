@@ -1,5 +1,6 @@
 export type TodoList = {
   name: string
+  userEmail: string
   todos: Todo[]
   id: string
 }

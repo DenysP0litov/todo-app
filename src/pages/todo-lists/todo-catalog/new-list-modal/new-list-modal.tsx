@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { AddTodoList } from 'store'
+import { AddTodoListThunk } from 'store'
 
 type Props = {
   setNewListEdit: Dispatch<SetStateAction<boolean>>
@@ -20,7 +20,7 @@ export const NewListModal: React.FC<Props> = ({ setNewListEdit }) => {
   const [modalInput, setModalInput] = useState('')
 
   const addNewList = (newListName: string) => {
-    dispatch(AddTodoList({ name: modalInput }))
+    dispatch(AddTodoListThunk(newListName))
     setNewListEdit(false)
   }
 

@@ -1,5 +1,4 @@
 import {
-  AddTodoListPayload,
   AddTodoPayload,
   MoveTodoPayload,
   RemoveTodoListPayload,
@@ -10,11 +9,25 @@ import {
   ToggleTodoStatusPayload,
 } from './types'
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from 'store/types';
 
 const initialState: TodoListsState = {
   todoLists: JSON.parse(localStorage.getItem('todo-lists')!) || [],
 }
+
+export const AddTodoListThunk = createAsyncThunk(
+  "AddTodoListThunk",
+  async (name: string, { getState }) => {
+    const state: RootState = getState()
+    return {
+      name,
+      userEmail: state!.users!.currentUser!.email,
+      todos: [],
+      id: Math.random().toString(),
+    }
+  }
+);
 
 export const todosSlice = createSlice({
   name: 'todos',
@@ -29,14 +42,17 @@ export const todosSlice = createSlice({
         id: Math.random().toString(),
       })
     },
-    AddTodoList: (state, action: PayloadAction<AddTodoListPayload>) => {
-      const { name } = action.payload
-      state.todoLists.push({
-        name,
-        todos: [],
-        id: Math.random().toString(),
-      })
-    },
+    // AddTodoList: (state, action: PayloadAction<AddTodoListPayload>) => {
+    //   const { name } = action.payload
+    //   // if (user) {
+    //   //   state.todoLists.push({
+    //   //     name,
+    //   //     userEmail: user.email,
+    //   //     todos: [],
+    //   //     id: Math.random().toString(),
+    //   //   })
+    //   // }
+    // },
     RemoveTodo: (state, action: PayloadAction<RemoveTodoPayload>) => {
       const { listId, todoId } = action.payload
       const listIndex = state.todoLists.findIndex((list) => list.id === listId)
@@ -92,12 +108,17 @@ export const todosSlice = createSlice({
       state.todoLists[startListIndex].todos.splice(startTodoIndex, 1)
       state.todoLists[finishListIndex].todos.splice(finishTodoIndex, 0, todoToMove)
     },
+    extraReducers: (builder) => {
+      builder.addCase(AddTodoListThunk.pending, (state, action) => {
+        console.log('im workin')
+        state.todos.todoLists.push(action.payload)
+      });
+    }
   },
 })
 
 export const {
   AddTodo,
-  AddTodoList,
   RemoveTodoList,
   RemoveTodo,
   SetTodoName,

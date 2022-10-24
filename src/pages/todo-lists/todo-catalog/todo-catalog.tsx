@@ -7,12 +7,14 @@ import { todosSelectors } from 'store'
 import { NewListModal } from './new-list-modal'
 import { TodoCard } from './todo-card'
 import { MoveTodo } from 'store'
+import { usersSelectors } from 'store/users/selectors'
 
 export const TodoCatalog = () => {
   const [newListEdit, setNewListEdit] = useState(false)
   const [drag, setDrag] = useState(false)
-  const todoLists = useSelector(todosSelectors.todoLists)
   const dispatch = useDispatch()
+  const user = useSelector(usersSelectors.currentUser)
+  const todoLists = useSelector(todosSelectors.todoLists)
 
   useEffect(() => {
     localStorage.setItem('todo-lists', JSON.stringify(todoLists))

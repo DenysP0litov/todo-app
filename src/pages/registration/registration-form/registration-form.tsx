@@ -1,18 +1,73 @@
 import { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikErrors } from 'formik'
 import { FormCountrySelect, FormTextInput } from 'components/form'
 import { LinkedTextCheckbox } from 'components/form/linked-text-checkbox'
 import { registrationFormInitialValues as initialValues } from './constants'
-import { validateRegistration as validate } from './utils'
 import 'styles/user-form.scss'
 import { RegistrationFormValues } from 'types'
+import { useSelector } from 'react-redux'
+import { usersSelectors } from 'store/users/selectors'
+import { useDispatch } from 'react-redux'
+import { AddUser, LoginUser } from 'store/users'
+import { validateEmail, validatePhone } from 'utils'
+import { validatePassword } from './utils'
 
 export const RegistrationForm = () => {  
   const navigate = useNavigate()
+  const users = useSelector(usersSelectors.users)
+  const dispatch = useDispatch()
+
+  const validate = (values: RegistrationFormValues) => {
+    const errors: FormikErrors<RegistrationFormValues> = {}
+  
+    if (!values.email) errors.email = 'Enter your email!'
+    else if (!validateEmail(values.email))
+      errors.email = 'Invalid email address!'
+    else if (users.find(user => user.email === values.email))
+      errors.email = 'This email is used already!'
+  
+    if (!values.phone) errors.phone = 'Enter your phone number!'
+    else if (!validatePhone(values.phone))
+      errors.phone = 'Invalid phone number!'
+    else if (users.find(user => user.phone === values.phone))
+      errors.phone = 'This phone is used already!'
+  
+    if (!values.password) errors.password = 'Enter your password!'
+    else if (!validatePassword(values.password))
+      errors.password = 'Password must have at least 8 symbols!'
+  
+    if (!values.confirmPassword) errors.confirmPassword = 'Confirm your password!'
+    else if (values.confirmPassword !== values.password)
+      errors.confirmPassword = 'Passwords dont match!'
+  
+    if (!values.country) errors.country = 'Choose your country!'
+  
+    if (!values.acceptTerms) errors.acceptTerms = 'Accept our terms of service!'
+  
+    return errors
+  }
 
   const handleLoginLinkClick = () => {
     navigate('./login')
+  }
+
+  const handleSubmit = (values: RegistrationFormValues) => {
+    const {email, phone, password, country} = values
+    const newUser = {
+      email,
+      phone,
+      password,
+      country,
+    }
+
+    dispatch(AddUser(newUser))
+    dispatch(LoginUser({email}))
+
+    localStorage.setItem('users', JSON.stringify([...users, newUser]))
+    localStorage.setItem('current-user', JSON.stringify(newUser))
+
+    navigate('/todos')
   }
 
   return (
@@ -20,11 +75,11 @@ export const RegistrationForm = () => {
       <RegistrationFormValues>
       initialValues={initialValues}
       validate={validate}
-      onSubmit={() => {}}
+      onSubmit={handleSubmit}
       validateOnChange={false}
       validateOnBlur={false}
     >
-      {({handleSubmit, setFieldError}) => { 
+      {({setFieldError}) => { 
         const handleFormChange = (e: FormEvent) => {
           setFieldError((e.target as HTMLElement).getAttribute('name')!, '')
         }
@@ -32,7 +87,6 @@ export const RegistrationForm = () => {
         return (
           <Form
             className="user-form" 
-            onSubmit={handleSubmit}
             onChange={(e) => handleFormChange(e)}
           >
             <h1 className="user-form__title">Welcome!</h1>  

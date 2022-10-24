@@ -1,5 +1,11 @@
+import { Header } from 'components'
 import { TodoCatalog } from './todo-catalog'
 
 export const TodoListsPage = () => {
-  return <TodoCatalog />
+  return (
+    <>
+      <Header />
+      <TodoCatalog />
+    </>
+  )
 }
