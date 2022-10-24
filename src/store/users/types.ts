@@ -1,5 +1,10 @@
 import { User } from "types"
 
+export type UsersState = {
+  users: User[]
+  currentUserEmail: string
+}
+
 export type AddUserPayload = {
   email: string
   phone: string
@@ -13,7 +18,51 @@ export type LoginUserPayload = {
 
 export type LogoutUserPayload = {}
 
-export type UsersState = {
-  users: User[]
-  currentUser: User | undefined
+export type AddTodoListPayload = {
+  userEmail: string
+  name: string
+}
+
+export type AddTodoPayload = {
+  userEmail: string
+  listId: string
+  name: string
+}
+
+export type RemoveTodoListPayload = {
+  userEmail: string
+  listId: string
+}
+
+export type RemoveTodoPayload = {
+  userEmail: string
+  listId: string
+  todoId: string
+}
+
+export type SetTodoListNamePayload = {
+  userEmail: string
+  listId: string
+  name: string
+}
+
+export type SetTodoNamePayload = {
+  userEmail: string
+  listId: string
+  todoId: string
+  name: string
+}
+
+export type ToggleTodoStatusPayload = {
+  userEmail: string
+  listId: string
+  todoId: string
+}
+
+export type MoveTodoPayload = {
+  userEmail: string
+  startListId: string
+  startTodoIndex: number
+  finishListId: string
+  finishTodoIndex: number
 }

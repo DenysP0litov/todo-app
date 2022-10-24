@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Todo } from './todo'
-import { TodoList as TodoListType } from 'types/todos'
+import { TodoList as TodoListType } from 'types'
 import { Draggable } from '@hello-pangea/dnd'
 
 type Props = {

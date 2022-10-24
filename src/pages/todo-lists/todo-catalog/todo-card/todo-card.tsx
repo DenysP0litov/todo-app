@@ -2,8 +2,8 @@ import { Droppable } from '@hello-pangea/dnd'
 import { Edit, Delete, AddCircleOutline } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { RemoveTodoList } from 'store'
+import { useDispatch, useSelector } from 'react-redux'
+import { RemoveTodoList, usersSelectors } from 'store'
 import { TodoList as TodoListType } from 'types'
 import { NewTodoModal } from './new-todo-modal'
 import { RenameListModal } from './rename-list-modal'
@@ -18,9 +18,10 @@ export const TodoCard: React.FC<Props> = ({ list, drag }) => {
   const [listNameEdit, setListNameEdit] = useState(false)
   const [newTodoEdit, setNewTodoEdit] = useState(false)
   const dispatch = useDispatch()
+  const userEmail = useSelector(usersSelectors.currentUserEmail)
 
   const removeTodoList = (listId: string) => {
-    dispatch(RemoveTodoList({ listId }))
+    dispatch(RemoveTodoList({ userEmail, listId }))
   }
 
   return (

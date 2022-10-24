@@ -8,8 +8,9 @@ import {
   TextField,
 } from '@mui/material'
 import { Dispatch, SetStateAction, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { SetTodoListName } from 'store'
+import { SetTodoListName, usersSelectors } from 'store'
 
 type Props = {
   listName: string
@@ -24,9 +25,10 @@ export const RenameListModal: React.FC<Props> = ({
 }) => {
   const [modalInput, setModalInput] = useState(listName)
   const dispatch = useDispatch()
+  const userEmail = useSelector(usersSelectors.currentUserEmail)
 
   const renameList = (newListName: string, listId: string) => {
-    dispatch(SetTodoListName({ listId, name: newListName }))
+    dispatch(SetTodoListName({ userEmail, listId, name: newListName }))
     setListNameEdit(false)
   }
 

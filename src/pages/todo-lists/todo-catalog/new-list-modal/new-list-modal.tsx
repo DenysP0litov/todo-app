@@ -8,8 +8,8 @@ import {
   TextField,
 } from '@mui/material'
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { AddTodoListThunk } from 'store'
+import { useDispatch, useSelector } from 'react-redux'
+import { usersSelectors, AddTodoList } from 'store'
 
 type Props = {
   setNewListEdit: Dispatch<SetStateAction<boolean>>
@@ -18,9 +18,10 @@ type Props = {
 export const NewListModal: React.FC<Props> = ({ setNewListEdit }) => {
   const dispatch = useDispatch()
   const [modalInput, setModalInput] = useState('')
+  const userEmail = useSelector(usersSelectors.currentUserEmail)
 
-  const addNewList = (newListName: string) => {
-    dispatch(AddTodoListThunk(newListName))
+  const addNewList = (name: string) => {
+    dispatch(AddTodoList({ userEmail, name }))
     setNewListEdit(false)
   }
 

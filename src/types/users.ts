@@ -13,4 +13,17 @@ export type RegistrationFormValues = LoginFormValues & {
 export type User = LoginFormValues & {
     phone: string
     country: string
+    lists: TodoList[]
+}
+
+export type TodoList = {
+    name: string
+    todos: Todo[]
+    id: string
+}
+
+export type Todo = {
+    id: string
+    name: string
+    status: boolean
 }

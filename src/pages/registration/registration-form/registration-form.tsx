@@ -5,7 +5,7 @@ import { FormCountrySelect, FormTextInput } from 'components/form'
 import { LinkedTextCheckbox } from 'components/form/linked-text-checkbox'
 import { registrationFormInitialValues as initialValues } from './constants'
 import 'styles/user-form.scss'
-import { RegistrationFormValues } from 'types'
+import { RegistrationFormValues, User } from 'types'
 import { useSelector } from 'react-redux'
 import { usersSelectors } from 'store/users/selectors'
 import { useDispatch } from 'react-redux'
@@ -54,18 +54,19 @@ export const RegistrationForm = () => {
 
   const handleSubmit = (values: RegistrationFormValues) => {
     const {email, phone, password, country} = values
-    const newUser = {
+    const newUser: User = {
       email,
       phone,
       password,
       country,
+      lists: [],
     }
 
     dispatch(AddUser(newUser))
     dispatch(LoginUser({email}))
 
     localStorage.setItem('users', JSON.stringify([...users, newUser]))
-    localStorage.setItem('current-user', JSON.stringify(newUser))
+    localStorage.setItem('current-user-email', JSON.stringify(email))
 
     navigate('/todos')
   }

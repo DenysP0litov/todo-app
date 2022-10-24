@@ -4,8 +4,9 @@ import { EditTodoModal } from './edit-todo-modal'
 import { Checkbox, IconButton } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
-import { RemoveTodo, ToggleTodoStatus } from 'store'
+import { RemoveTodo, ToggleTodoStatus, usersSelectors } from 'store'
 import { DraggableProvided } from '@hello-pangea/dnd'
+import { useSelector } from 'react-redux'
 
 type Props = {
   todo: TodoType
@@ -16,15 +17,15 @@ type Props = {
 
 export const Todo: React.FC<Props> = ({ todo, listId, innerRef, provided }) => {
   const [todoEdit, setTodoEdit] = useState(false)
-
   const dispatch = useDispatch()
+  const userEmail = useSelector(usersSelectors.currentUserEmail)
 
   const toggleTodoStatus = (listId: string, todoId: string) => {
-      dispatch(ToggleTodoStatus({ listId, todoId }))
+      dispatch(ToggleTodoStatus({ userEmail, listId, todoId }))
   }
 
   const removeTodo = (listId: string, todoId: string) => {
-      dispatch(RemoveTodo({ listId, todoId }))
+      dispatch(RemoveTodo({ userEmail, listId, todoId }))
   }
 
   return (

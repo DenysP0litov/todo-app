@@ -8,8 +8,9 @@ import {
   TextField,
 } from '@mui/material'
 import { Dispatch, SetStateAction, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { AddTodo } from 'store'
+import { AddTodo, usersSelectors } from 'store'
 
 type Props = {
   listId: string
@@ -19,9 +20,10 @@ type Props = {
 export const NewTodoModal: React.FC<Props> = ({ listId, setNewTodoEdit }) => {
   const [modalInput, setModalInput] = useState('')
   const dispatch = useDispatch()
+  const userEmail = useSelector(usersSelectors.currentUserEmail)
 
   const addNewTodo = (name: string, listId: string) => {
-    dispatch(AddTodo({ name, listId }))
+    dispatch(AddTodo({ userEmail, name, listId }))
     setNewTodoEdit(false)
   }
 

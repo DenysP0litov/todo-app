@@ -31,10 +31,8 @@ export const LoginForm = () => {
   }
 
   const handleSubmit = (values: LoginFormValues) => {
-    const user = users.find(user => user.email === values.email)
-
     dispatch(LoginUser({email: values.email}))
-    localStorage.setItem('current-user', JSON.stringify(user))
+    localStorage.setItem('current-user-email', JSON.stringify(values.email))
     navigate('/todos')
   }
 

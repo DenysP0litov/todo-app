@@ -9,8 +9,8 @@ export const Header: React.FC = () => {
     const logout = () => {
         dispatch(LogoutUser())
         localStorage.setItem(
-            'currentUser',
-            JSON.stringify(undefined),
+            'current-user-email',
+            JSON.stringify(''),
         )
         navigate('/login')
     }
