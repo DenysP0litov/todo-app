@@ -7,10 +7,11 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material'
+import { observer } from 'mobx-react'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { SetTodoName, usersSelectors } from 'store'
+import { UsersStore } from 'store-mobx'
+
+const usersStore = new UsersStore()
 
 type Props = {
   todoName: string
@@ -19,18 +20,17 @@ type Props = {
   setTodoEdit: Dispatch<SetStateAction<boolean>>
 }
 
-export const EditTodoModal: React.FC<Props> = ({
+export const EditTodoModal: React.FC<Props> = observer(({
   todoName,
   listId,
   todoId,
   setTodoEdit,
 }) => {
   const [modalInput, setModalInput] = useState(todoName)
-  const dispatch = useDispatch()
-  const userEmail = useSelector(usersSelectors.currentUserEmail)
+  const userEmail = usersStore.currentUserEmail
 
   const renameTodo = (listId: string, todoId: string, name: string) => {
-    dispatch(SetTodoName({ userEmail, listId, todoId, name }))
+    usersStore.SetTodoName({ userEmail, listId, todoId, name })
     setTodoEdit(false)
   }
 
@@ -70,4 +70,4 @@ export const EditTodoModal: React.FC<Props> = ({
       </DialogActions>
     </Dialog>
   )
-}
+})

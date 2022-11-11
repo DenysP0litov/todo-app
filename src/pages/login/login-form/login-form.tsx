@@ -5,15 +5,13 @@ import { LoginFormValues } from 'types';
 import { loginFormInitialValues as initialValues } from './constants'
 import { FormTextInput } from 'components/form'
 import 'styles/user-form.scss'
-import { useSelector } from 'react-redux';
-import { usersSelectors } from 'store/users/selectors';
-import { useDispatch } from 'react-redux';
-import { LoginUser } from 'store/users';
+import { UsersStore } from 'store-mobx';
+
+const usersStore = new UsersStore()
 
 export const LoginForm = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const users = useSelector(usersSelectors.users)
+  const users = usersStore.users
 
   const validate = (values: LoginFormValues) => {
     const errors: FormikErrors<LoginFormValues> = {}
@@ -31,7 +29,7 @@ export const LoginForm = () => {
   }
 
   const handleSubmit = (values: LoginFormValues) => {
-    dispatch(LoginUser({email: values.email}))
+    usersStore.LoginUser({email: values.email})
     localStorage.setItem('current-user-email', JSON.stringify(values.email))
     navigate('/todos')
   }

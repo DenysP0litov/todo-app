@@ -2,11 +2,13 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { LoginPage, RegistrationPage, TodoListsPage  } from 'pages'
 import './App.scss'
 import { ProtectedRoute } from 'components/protected'
-import { usersSelectors } from 'store'
-import { useSelector } from 'react-redux'
+import { UsersStore } from 'store-mobx'
+import { observer } from 'mobx-react'
 
-function App() {
-  const userEmail = useSelector(usersSelectors.currentUserEmail)
+const usersStore = new UsersStore()
+
+const App = observer(() => {
+  const userEmail = usersStore.currentUserEmail
 
   return (
     <Routes>
@@ -30,6 +32,6 @@ function App() {
       }/>
     </Routes>
   )
-}
+})
 
 export default App

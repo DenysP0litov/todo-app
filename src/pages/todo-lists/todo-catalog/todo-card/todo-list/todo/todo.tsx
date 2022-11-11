@@ -3,10 +3,11 @@ import { Todo as TodoType } from 'types'
 import { EditTodoModal } from './edit-todo-modal'
 import { Checkbox, IconButton } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material'
-import { useDispatch } from 'react-redux'
-import { RemoveTodo, ToggleTodoStatus, usersSelectors } from 'store'
 import { DraggableProvided } from '@hello-pangea/dnd'
-import { useSelector } from 'react-redux'
+import { UsersStore } from 'store-mobx'
+import { observer } from 'mobx-react'
+
+const usersStore = new UsersStore()
 
 type Props = {
   todo: TodoType
@@ -15,17 +16,16 @@ type Props = {
   provided: DraggableProvided
 }
 
-export const Todo: React.FC<Props> = ({ todo, listId, innerRef, provided }) => {
+export const Todo: React.FC<Props> = observer(({ todo, listId, innerRef, provided }) => {
   const [todoEdit, setTodoEdit] = useState(false)
-  const dispatch = useDispatch()
-  const userEmail = useSelector(usersSelectors.currentUserEmail)
+  const userEmail = usersStore.currentUserEmail
 
   const toggleTodoStatus = (listId: string, todoId: string) => {
-      dispatch(ToggleTodoStatus({ userEmail, listId, todoId }))
+      usersStore.ToggleTodoStatus({ userEmail, listId, todoId })
   }
 
   const removeTodo = (listId: string, todoId: string) => {
-      dispatch(RemoveTodo({ userEmail, listId, todoId }))
+      usersStore.RemoveTodo({ userEmail, listId, todoId })
   }
 
   return (
@@ -66,4 +66,4 @@ export const Todo: React.FC<Props> = ({ todo, listId, innerRef, provided }) => {
       )}
     </>
   )
-}
+})

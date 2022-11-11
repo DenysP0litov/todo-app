@@ -1,22 +1,21 @@
 import { DragDropContext, DropResult } from '@hello-pangea/dnd'
 import { NoteAdd } from '@mui/icons-material'
+import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { UsersStore } from 'store-mobx'
 import { NewListModal } from './new-list-modal'
 import { TodoCard } from './todo-card'
-import { MoveTodo } from 'store'
-import { usersSelectors } from 'store/users/selectors'
 
-export const TodoCatalog = () => {
+const usersStore = new UsersStore()
+
+export const TodoCatalog = observer(() => {
   const [newListEdit, setNewListEdit] = useState(false)
   const [drag, setDrag] = useState(false)
-  const dispatch = useDispatch()
-  const userEmail = useSelector(usersSelectors.currentUserEmail)
-  const users = useSelector(usersSelectors.users)
-  const todoLists = useSelector(usersSelectors.users).find(
+  const userEmail = usersStore.currentUserEmail
+  const users = usersStore.users
+  const todoLists = usersStore.users.find(
     user => user.email === userEmail
-  )!.lists || []
+  )?.lists || []
 
   useEffect(() => {
     localStorage.setItem('users', JSON.stringify(users))
@@ -29,13 +28,13 @@ export const TodoCatalog = () => {
       console.log('there is no destination')
     } else {
       console.log('there is destination')
-      dispatch(MoveTodo({
+      usersStore.MoveTodo({
         userEmail,
         startListId: source.droppableId, 
         startTodoIndex: source.index, 
         finishListId: destination.droppableId, 
         finishTodoIndex: destination.index,
-      }))
+      })
     }
 
     setDrag(false)
@@ -56,9 +55,10 @@ export const TodoCatalog = () => {
 
         <div
           className="add-todo-list"
-          onClick={() => {
-            setNewListEdit(true)
-          }}
+          // onClick={() => {
+          //   setNewListEdit(true)
+          // }}
+          onClick={() => console.log(userEmail)}
         >
           Add new list
           <NoteAdd fontSize="large" />
@@ -67,4 +67,4 @@ export const TodoCatalog = () => {
       {newListEdit && <NewListModal setNewListEdit={setNewListEdit} />}
     </DragDropContext>
   )
-}
+})

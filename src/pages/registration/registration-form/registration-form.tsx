@@ -6,17 +6,15 @@ import { LinkedTextCheckbox } from 'components/form/linked-text-checkbox'
 import { registrationFormInitialValues as initialValues } from './constants'
 import 'styles/user-form.scss'
 import { RegistrationFormValues, User } from 'types'
-import { useSelector } from 'react-redux'
-import { usersSelectors } from 'store/users/selectors'
-import { useDispatch } from 'react-redux'
-import { AddUser, LoginUser } from 'store/users'
 import { validateEmail, validatePhone } from 'utils'
 import { validatePassword } from './utils'
+import { UsersStore } from 'store-mobx'
+
+const usersStore = new UsersStore()
 
 export const RegistrationForm = () => {  
   const navigate = useNavigate()
-  const users = useSelector(usersSelectors.users)
-  const dispatch = useDispatch()
+  const users = usersStore.users
 
   const validate = (values: RegistrationFormValues) => {
     const errors: FormikErrors<RegistrationFormValues> = {}
@@ -62,8 +60,8 @@ export const RegistrationForm = () => {
       lists: [],
     }
 
-    dispatch(AddUser(newUser))
-    dispatch(LoginUser({email}))
+    usersStore.AddUser(newUser)
+    usersStore.LoginUser({email})
 
     localStorage.setItem('users', JSON.stringify([...users, newUser]))
     localStorage.setItem('current-user-email', JSON.stringify(email))

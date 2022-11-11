@@ -1,13 +1,13 @@
-import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { LogoutUser } from "store/users"
+import { UsersStore } from "store-mobx"
+
+const usersStore = new UsersStore()
 
 export const Header: React.FC = () => {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const logout = () => {
-        dispatch(LogoutUser())
+        usersStore.LogoutUser()
         localStorage.setItem(
             'current-user-email',
             JSON.stringify(''),

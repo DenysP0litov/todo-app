@@ -2,12 +2,13 @@ import { FC } from 'react'
 import { Todo } from './todo'
 import { TodoList as TodoListType } from 'types'
 import { Draggable } from '@hello-pangea/dnd'
+import { observer } from 'mobx-react'
 
 type Props = {
   list: TodoListType
 }
 
-export const TodoList: FC<Props> = ({ list }) => {
+export const TodoList: FC<Props> = observer(({ list }) => {
   return (
     <ul
       className="todo-list__todos"
@@ -28,4 +29,4 @@ export const TodoList: FC<Props> = ({ list }) => {
       })}
     </ul>
   )
-}
+})
