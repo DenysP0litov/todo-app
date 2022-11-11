@@ -9,9 +9,7 @@ import {
 } from '@mui/material'
 import { observer } from 'mobx-react'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { UsersStore } from 'store-mobx'
-
-const usersStore = new UsersStore()
+import { usersStore } from 'store-mobx'
 
 type Props = {
   listName: string
@@ -28,7 +26,7 @@ export const RenameListModal: React.FC<Props> = observer(({
   const userEmail = usersStore.currentUserEmail
 
   const renameList = (newListName: string, listId: string) => {
-    usersStore.SetTodoListName({ userEmail, listId, name: newListName })
+    usersStore.setTodoListName({ userEmail, listId, name: newListName })
     setListNameEdit(false)
   }
 

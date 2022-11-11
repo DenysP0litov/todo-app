@@ -9,9 +9,7 @@ import {
 } from '@mui/material'
 import { observer } from 'mobx-react'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { UsersStore } from 'store-mobx'
-
-const usersStore = new UsersStore()
+import { usersStore } from 'store-mobx'
 
 type Props = {
   listId: string
@@ -23,7 +21,7 @@ export const NewTodoModal: React.FC<Props> = observer(({ listId, setNewTodoEdit 
   const userEmail = usersStore.currentUserEmail
 
   const addNewTodo = (name: string, listId: string) => {
-    usersStore.AddTodo({ userEmail, name, listId })
+    usersStore.addTodo({ userEmail, name, listId })
     setNewTodoEdit(false)
   }
 

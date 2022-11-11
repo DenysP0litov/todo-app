@@ -8,9 +8,8 @@ import 'styles/user-form.scss'
 import { RegistrationFormValues, User } from 'types'
 import { validateEmail, validatePhone } from 'utils'
 import { validatePassword } from './utils'
-import { UsersStore } from 'store-mobx'
+import { usersStore } from 'store-mobx'
 
-const usersStore = new UsersStore()
 
 export const RegistrationForm = () => {  
   const navigate = useNavigate()
@@ -60,8 +59,8 @@ export const RegistrationForm = () => {
       lists: [],
     }
 
-    usersStore.AddUser(newUser)
-    usersStore.LoginUser({email})
+    usersStore.addUser(newUser)
+    usersStore.loginUser({email})
 
     localStorage.setItem('users', JSON.stringify([...users, newUser]))
     localStorage.setItem('current-user-email', JSON.stringify(email))

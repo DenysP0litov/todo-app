@@ -2,11 +2,9 @@ import { DragDropContext, DropResult } from '@hello-pangea/dnd'
 import { NoteAdd } from '@mui/icons-material'
 import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
-import { UsersStore } from 'store-mobx'
+import { usersStore } from 'store-mobx'
 import { NewListModal } from './new-list-modal'
 import { TodoCard } from './todo-card'
-
-const usersStore = new UsersStore()
 
 export const TodoCatalog = observer(() => {
   const [newListEdit, setNewListEdit] = useState(false)
@@ -19,16 +17,13 @@ export const TodoCatalog = observer(() => {
 
   useEffect(() => {
     localStorage.setItem('users', JSON.stringify(users))
-  }, [users])
+  })
 
   const onDragEnd = (result: DropResult) => {
     const {source, destination} = result
 
-    if (!destination) {
-      console.log('there is no destination')
-    } else {
-      console.log('there is destination')
-      usersStore.MoveTodo({
+    if (destination) {
+      usersStore.moveTodo({
         userEmail,
         startListId: source.droppableId, 
         startTodoIndex: source.index, 
@@ -55,10 +50,9 @@ export const TodoCatalog = observer(() => {
 
         <div
           className="add-todo-list"
-          // onClick={() => {
-          //   setNewListEdit(true)
-          // }}
-          onClick={() => console.log(userEmail)}
+          onClick={() => {
+            setNewListEdit(true)
+          }}
         >
           Add new list
           <NoteAdd fontSize="large" />

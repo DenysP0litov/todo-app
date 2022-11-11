@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom"
-import { UsersStore } from "store-mobx"
-
-const usersStore = new UsersStore()
+import { usersStore } from "store-mobx"
 
 export const Header: React.FC = () => {
     const navigate = useNavigate()
 
     const logout = () => {
-        usersStore.LogoutUser()
+        usersStore.logoutUser()
         localStorage.setItem(
             'current-user-email',
             JSON.stringify(''),

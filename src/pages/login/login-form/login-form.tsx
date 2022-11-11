@@ -5,9 +5,7 @@ import { LoginFormValues } from 'types';
 import { loginFormInitialValues as initialValues } from './constants'
 import { FormTextInput } from 'components/form'
 import 'styles/user-form.scss'
-import { UsersStore } from 'store-mobx';
-
-const usersStore = new UsersStore()
+import { usersStore } from 'store-mobx';
 
 export const LoginForm = () => {
   const navigate = useNavigate()
@@ -29,7 +27,7 @@ export const LoginForm = () => {
   }
 
   const handleSubmit = (values: LoginFormValues) => {
-    usersStore.LoginUser({email: values.email})
+    usersStore.loginUser({email: values.email})
     localStorage.setItem('current-user-email', JSON.stringify(values.email))
     navigate('/todos')
   }

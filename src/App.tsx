@@ -2,10 +2,8 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { LoginPage, RegistrationPage, TodoListsPage  } from 'pages'
 import './App.scss'
 import { ProtectedRoute } from 'components/protected'
-import { UsersStore } from 'store-mobx'
+import { usersStore } from 'store-mobx'
 import { observer } from 'mobx-react'
-
-const usersStore = new UsersStore()
 
 const App = observer(() => {
   const userEmail = usersStore.currentUserEmail

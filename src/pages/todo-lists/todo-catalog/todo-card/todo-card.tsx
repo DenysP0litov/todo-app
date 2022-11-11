@@ -3,13 +3,11 @@ import { Edit, Delete, AddCircleOutline } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import { observer } from 'mobx-react'
 import { useState } from 'react'
-import { UsersStore } from 'store-mobx'
+import { usersStore } from 'store-mobx'
 import { TodoList as TodoListType } from 'types'
 import { NewTodoModal } from './new-todo-modal'
 import { RenameListModal } from './rename-list-modal'
 import { TodoList } from './todo-list'
-
-const usersStore = new UsersStore()
 
 type Props = {
   list: TodoListType
@@ -22,7 +20,7 @@ export const TodoCard: React.FC<Props> = observer(({ list, drag }) => {
   const userEmail = usersStore.currentUserEmail
 
   const removeTodoList = (listId: string) => {
-    usersStore.RemoveTodoList({ userEmail, listId })
+    usersStore.removeTodoList({ userEmail, listId })
   }
 
   return (

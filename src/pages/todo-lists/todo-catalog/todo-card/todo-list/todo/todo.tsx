@@ -4,10 +4,8 @@ import { EditTodoModal } from './edit-todo-modal'
 import { Checkbox, IconButton } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material'
 import { DraggableProvided } from '@hello-pangea/dnd'
-import { UsersStore } from 'store-mobx'
+import { usersStore } from 'store-mobx'
 import { observer } from 'mobx-react'
-
-const usersStore = new UsersStore()
 
 type Props = {
   todo: TodoType
@@ -21,11 +19,11 @@ export const Todo: React.FC<Props> = observer(({ todo, listId, innerRef, provide
   const userEmail = usersStore.currentUserEmail
 
   const toggleTodoStatus = (listId: string, todoId: string) => {
-      usersStore.ToggleTodoStatus({ userEmail, listId, todoId })
+      usersStore.toggleTodoStatus({ userEmail, listId, todoId })
   }
 
   const removeTodo = (listId: string, todoId: string) => {
-      usersStore.RemoveTodo({ userEmail, listId, todoId })
+      usersStore.removeTodo({ userEmail, listId, todoId })
   }
 
   return (
